@@ -8,7 +8,7 @@ const AccountPanel = () => {
       <div className="flex items-center space-x-4 mb-4">
         <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
           {user?.name?.charAt(0).toUpperCase()}
-        </div>
+      </div>
         <div>
           <h3 className="font-semibold">{user?.name}</h3>
           <p className="text-sm text-gray-600">{user?.email}</p>
