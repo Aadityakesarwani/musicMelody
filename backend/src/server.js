@@ -11,11 +11,18 @@ const app = express();
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://music-melody.vercel.app', 'https://*.vercel.app', 'https://music-melody-k127bu82e-adityas-projects-7439a890.vercel.app'] 
+    ? [
+        'https://music-melody.vercel.app',
+        'https://*.vercel.app',
+        'https://music-melody-k127bu82e-adityas-projects-7439a890.vercel.app',
+        'https://music-melody-git-main-adityas-projects-7439a890.vercel.app'
+      ] 
     : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  credentials: true
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 
 // Middleware
