@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        #audioPlayer {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Music Generator</h1>
+        <form id="musicForm">
+            <div class="form-group">
+                <label for="prompt">Prompt:</label>
+                <input type="text" id="prompt" name="prompt" placeholder="Enter your music prompt" required>
+            </div>
+            <div class="form-group">
+                <label for="style">Style:</label>
+                <select id="style" name="style">
+                    <option value="classical">Classical</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="pop">Pop</option>
+                    <option value="rock">Rock</option>
+                </select>
+            </div>
+            <button type="submit">Generate Music</button>
+        </form>
+        <div id="status"></div>
+        <audio id="audioPlayer" controls class="hidden">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <script>
+        document.getElementById('musicForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const statusDiv = document.getElementById('status');
+            const audioPlayer = document.getElementById('audioPlayer');
+            
+            statusDiv.textContent = 'Generating music...';
+            statusDiv.className = '';
+            audioPlayer.className = 'hidden';
+            
+            try {
+                const response = await fetch('http://localhost:3000/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        prompt: document.getElementById('prompt').value,
+                        style: document.getElementById('style').value
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to generate music');
+                }
+
+                // Get the audio file as a blob
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                
+                // Update the audio player
+                audioPlayer.src = url;
+                audioPlayer.className = '';
+                
+                statusDiv.textContent = 'Music generated successfully! Use the player below to listen:';
+                statusDiv.className = 'success';
+                
+                // Clean up the old URL when a new one is created
+                audioPlayer.onended = () => {
+                    window.URL.revokeObjectURL(url);
+                };
+            } catch (error) {
+                statusDiv.textContent = `Error: ${error.message}`;
+                statusDiv.className = 'error';
+                audioPlayer.className = 'hidden';
+            }
+        });
+    </script>
+</body>
+</html> 
