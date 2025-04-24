@@ -8,9 +8,11 @@ dotenv.config();
 
 const app = express();
 
-// CORS configuration - more permissive for development
+// CORS configuration
 app.use(cors({
-  origin: '*', // Allow all origins in development
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://music-melody.vercel.app', 'https://*.vercel.app'] 
+    : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   credentials: true
