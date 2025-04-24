@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 
 // Define the API URL (make sure your Flask server is running here)
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000/api/generate';
+const API_URL = 'http://127.0.0.1:5000/api/generate';
 
 // --- Custom Hook for API Call ---
 const useGenerateMusic = () => {
