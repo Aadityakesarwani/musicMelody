@@ -369,11 +369,9 @@ export default function Generate() {
                   <SelectValue placeholder="Select Genre" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="pop">Pop</SelectItem>
-                  <SelectItem value="rock">Rock</SelectItem>
-                  <SelectItem value="jazz">Jazz</SelectItem>
                   <SelectItem value="classical">Classical</SelectItem>
-                  <SelectItem value="electronic">Electronic</SelectItem>
+                  <SelectItem value="jazz">Jazz</SelectItem>
+                  <SelectItem value="pop">Pop</SelectItem>
                 </SelectContent>
               </Select>
             </div>
